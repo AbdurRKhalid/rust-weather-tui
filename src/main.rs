@@ -8,10 +8,12 @@ async fn main() {
     let args: Vec<String> = env::args().collect();
     let city = &args[1];
     let application_key = "a25e026039a4ee20f206ce5b9bb1b59b";
-
-    match get_latitude_longitude(city, application_key).await{
-        Ok(body) => println!("{}", body),
-        Err(e) => eprintln!("Error: {}", e),
+    match get_latitude_longitude(city, application_key).await {
+        Ok(json) => {
+            let data = &json[0];
+            let latitude = &data["lat"];
+            let longitude = &data["lon"];
+        }
+        Err(e) => eprintln!("Error :{}", e),
     }
-
 }
