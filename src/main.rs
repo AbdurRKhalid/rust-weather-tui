@@ -1,8 +1,11 @@
 use std::env;
 mod get_lat_long;
 mod get_weather_report;
+mod print_weather_types;
 use get_lat_long::get_latitude_longitude;
 use get_weather_report::get_simple_weather;
+use print_weather_types::print_mist;
+
 
 
 #[tokio::main]
@@ -35,11 +38,7 @@ async fn main() {
                 let wind_speed = &weather_data["wind"]["speed"];
                 println!("look outside window it is {}", main_weather_type);
                 if main_weather_type == "Mist" {
-                    println!("\x1b[90m     ___  \x1b[0m");
-                    println!("\x1b[90m  _(   )_\x1b[0m");
-                    println!("\x1b[90m (       )\x1b[0m");
-                    println!("\x1b[90m  ~~~~~~~\x1b[0m");
-                    println!("\x1b[90m   Mist\x1b[0m");
+                    print_mist();
                 }
                 println!("\n{:<20} | {}", "Property", "Value");
                 println!("{:-<20}-+-{:-<15}", "", "");
