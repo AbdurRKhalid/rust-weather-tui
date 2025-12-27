@@ -7,3 +7,10 @@ pub async fn get_simple_weather(latitude: f64, longitude: f64, application_key: 
     let json: Value = response.json().await?;
     Ok(json)
 }
+
+pub async fn get_detail_weather(latitude: f64, longitude: f64, application_key: &str) -> Result<Value, Box<dyn std::error::Error>> {
+    let url: String = format!("http://api.openweathermap.org/data/2.5/forecast?lat={}&lon={}&exclude=minutely,hourly,alerts&appid={}&units=metric", latitude, longitude, application_key);
+    let response = reqwest::get(url).await?;
+    let json = response.json().await?;
+    Ok(json)
+}

@@ -4,6 +4,7 @@ mod get_weather_report;
 mod print_weather_types;
 use get_lat_long::get_latitude_longitude;
 use get_weather_report::get_simple_weather;
+use get_weather_report::get_detail_weather;
 use print_weather_types::print_mist;
 
 
@@ -50,6 +51,43 @@ async fn main() {
                 println!("{:<20} | {}", "Wind Speed", format!("{} m/s", wind_speed));
             }
             Err(e) => eprintln!("Error :{}", e)
+        }
+    };
+
+    if weather_type == "detail" {
+        match get_detail_weather(latitude, longitude, application_key).await {
+            Ok(json) => {
+                let data = &json["list"];
+                let current_day = &data[0];
+                // let current_weather = &current_day["weather"]["main"];
+                let current_temperature = &current_day["main"]["temp"];
+                let current_min = &current_day["main"]["temp_min"];
+                let current_max = &current_day["main"]["temp_max"];
+
+                println!("╔════════════════════════════════════════════════╗");
+                println!("║           CURRENT DAY WEATHER                  ║");
+                println!("╠════════════════════════════════════════════════╣");
+                println!("║ Temperature: {:>7}°C                            ║", current_temperature);
+                println!("║ Minimum:     {:>7}°C                            ║", current_min);
+                println!("║ Maximum:     {:>7}°C                            ║", current_max);
+                println!("╚════════════════════════════════════════════════╝");
+                println!();
+
+
+                println!("AN OVERVIEW FOR THE UPCOMING DAYS");
+
+                println!("┌──────────┬─────────────────────┬─────────────────────┬─────────────────────┐");
+                println!("│ Next Day │ Regular Temperature │ Minimum Temperature │ Maximum Temperature │");
+                println!("├──────────┼─────────────────────┼─────────────────────┼─────────────────────┤");
+                for i in 1..=16 {
+                    let next_day = &data[i];
+                    let temp = &next_day["main"]["temp"];
+                    let temp_min = &next_day["main"]["temp_min"];
+                    let temp_max = &next_day["main"]["temp_max"];
+                    println!("| {:^8} | {:^19} | {:^19} | {:^19} |", i, format!("{:>6}°C", temp), format!("{:>6}°C", temp_min), format!("{:>6}°C", temp_max));
+                }
+            }
+            Err(e) => eprint!("Error: {}", e)
         }
     }
 }
