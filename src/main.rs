@@ -7,6 +7,14 @@ use get_weather_report::get_simple_weather;
 use get_weather_report::get_detail_weather;
 use print_weather_types::print_mist;
 
+use crate::print_weather_types::print_clear;
+use crate::print_weather_types::print_clouds;
+use crate::print_weather_types::print_drizzle;
+use crate::print_weather_types::print_haze;
+use crate::print_weather_types::print_rain;
+use crate::print_weather_types::print_snow;
+use crate::print_weather_types::print_thumberstorm;
+
 
 
 #[tokio::main]
@@ -41,6 +49,27 @@ async fn main() {
                 if main_weather_type == "Mist" {
                     print_mist();
                 }
+                if main_weather_type == "Clouds" {
+                    print_clouds();
+                }
+                if main_weather_type == "Thunderstorm" {
+                    print_thumberstorm();
+                }
+                if main_weather_type == "Drizzle" {
+                    print_drizzle();
+                }
+                if main_weather_type == "Clear" {
+                    print_clear();
+                }
+                if main_weather_type == "Haze" {
+                    print_haze();
+                }
+                if main_weather_type == "Snow" {
+                    print_snow();
+                }
+                if main_weather_type == "Rain" {
+                    print_rain();
+                }
                 println!("\n{:<20} | {}", "Property", "Value");
                 println!("{:-<20}-+-{:-<15}", "", "");
                 println!("{:<20} | {}", "Temperature", format!("{}°C",current_temp));
@@ -59,7 +88,6 @@ async fn main() {
             Ok(json) => {
                 let data = &json["list"];
                 let current_day = &data[0];
-                // let current_weather = &current_day["weather"]["main"];
                 let current_temperature = &current_day["main"]["temp"];
                 let current_min = &current_day["main"]["temp_min"];
                 let current_max = &current_day["main"]["temp_max"];
