@@ -14,7 +14,8 @@ use crate::print_weather_types::print_haze;
 use crate::print_weather_types::print_rain;
 use crate::print_weather_types::print_snow;
 use crate::print_weather_types::print_thumberstorm;
-
+#[macro_use]
+extern crate dotenv_codegen;
 
 
 #[tokio::main]
@@ -22,7 +23,7 @@ async fn main() {
     let args: Vec<String> = env::args().collect();
     let city = &args[1];
     let weather_type = &args[2];
-    let application_key = "a25e026039a4ee20f206ce5b9bb1b59b";
+    let application_key = dotenv!("application_key");
     let mut latitude = 0.0;
     let mut longitude = 0.0;
     match get_latitude_longitude(city, application_key).await {
